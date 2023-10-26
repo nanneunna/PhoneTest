@@ -5,13 +5,13 @@ import java.util.Scanner;
 
 class Data
 {
-    String a, b, c;
-    public String getA() {return a;}
-    public void setA(String a) {this.a = a;}
-    public String getB() {return b;}
-    public void setB(String b) {this.b = b;}
-    public String getC() {return c;}
-    public void setC(String c) {this.c = c;}
+    String name, phoneNumber, address;
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
+    public String getPhoneNumber() {return phoneNumber;}
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+    public String getAddress() {return address;}
+    public void setAddress(String address) {this.address = address;}
 }
 class SQLC
 {
@@ -26,10 +26,11 @@ class SQLC
     {
         try {
             pstmt = conn.prepareStatement(" insert into phone values (?,?,?);");
-            pstmt.setString(1, d.getA());
-            pstmt.setString(2, d.getB());
-            pstmt.setString(3, d.getC());
+            pstmt.setString(1, d.getName());
+            pstmt.setString(2, d.getPhoneNumber());
+            pstmt.setString(3, d.getAddress());
             pstmt.executeUpdate();
+            System.out.println("입력이 완료되었습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,11 +40,19 @@ class SQLC
         String sql = "select * from phone;";
         pstmt=conn.prepareStatement(sql);
         ResultSet rs =pstmt.executeQuery();
+        int count=0;
         while(rs.next()){
             System.out.print(rs.getString("name")+" / ");
             System.out.print(rs.getString("phoneNUmber")+" / ");
             System.out.print(rs.getString("address"));
             System.out.println();
+            count++;
+        }
+        if(count==0){
+            System.out.println("전화번호부에 등록된 정보가 없습니다.");
+        }
+        else {
+            System.out.println("총 "+count+"건의 정보가 등록되어 있습니다.");
         }
     }
     void findSelect(String name) throws SQLException {
@@ -86,11 +95,11 @@ class InputClass
         Scanner scS = new Scanner(System.in);
 
         System.out.print("이름을 입력하세요 : ");
-        d.setA(scS.nextLine());
+        d.setName(scS.nextLine());
         System.out.print("전화번호를 입력하세요 : ");
-        d.setB(scS.nextLine());
+        d.setPhoneNumber(scS.nextLine());
         System.out.print("주소를 입력하세요 : ");
-        d.setC(scS.nextLine());
+        d.setAddress(scS.nextLine());
         return d;
 
     }
@@ -109,29 +118,28 @@ public class PhoneTest {
         InputClass ic = new InputClass();
         while(true)
         {
-            System.out.print("1. 입력 2.전체출력 3.검색 4.삭제 5.종료 : ");
+            System.out.print("1.입력 2.검색 3.삭제 4.출력 5.종료 : ");
             int num = sc.nextInt();
-            if(num==1)
-            {
+            if(num==1) {
                 sq.DataInsert(ic.valueReturn());
             }
             else if(num == 2){
-                sq.selectAll();
-            }
-            else if(num == 3){
                 sq.findSelect(ic.findString());
             }
-            else if(num == 4){
+            else if(num == 3){
                 sq.deleteSelect(ic.findString());
+            }
+            else if(num == 4){
+                sq.selectAll();
             }
             else if(num == 5){
                 System.out.println("프로그램을 종료합니다.");
                 break;
             }
-            else
-            {
+            else {
                 System.out.println("잘못된 입력입니다.");
             }
+            System.out.println();
         }
     }
 }
