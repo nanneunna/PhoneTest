@@ -119,7 +119,9 @@ public class PhoneTest {
         while(true)
         {
             System.out.print("1.입력 2.검색 3.삭제 4.출력 5.종료 : ");
+
             int num = sc.nextInt();
+
             if(num==1) {
                 sq.DataInsert(ic.valueReturn());
             }
