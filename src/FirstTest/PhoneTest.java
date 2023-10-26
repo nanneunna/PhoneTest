@@ -70,11 +70,11 @@ class SQLC
         pstmt=conn.prepareStatement(sql);
         pstmt.setString(1, name);
         int num = pstmt.executeUpdate();
-        if(num==1){
-            System.out.println("삭제가 완료되었습니다.");
+        if(num==0){
+            System.out.println("찾는 이름이 없습니다.");
         }
         else {
-            System.out.println("찾는 이름이 없습니다.");
+            System.out.println("삭제가 완료되었습니다.");
         }
     }
 }
